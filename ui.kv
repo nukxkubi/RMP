@@ -1,0 +1,252 @@
+MDScreenManager:
+    md_bg_color:app.theme_cls.backgroundColor
+
+    MDScreen:
+        name: "Login"
+
+        MDBoxLayout:
+            spacing: '10dp'
+            adaptive_width:True
+            adaptive_size:True
+            adaptive_height:True
+            pos_hint:{'center_x':.5,'center_y':.5}
+            orientation:"vertical"
+
+            MDLabel:
+                adaptive_height: True
+                theme_font_size:'Custom'
+                font_size:'24sp'
+                theme_font_name:'Custom'
+                font_name: 'Bahnschrift'
+                text:"Вход"
+                halign:'center'
+
+            MDTextField:
+                id:login_login
+                mode:"outlined"
+
+                MDTextFieldLeadingIcon:
+                    icon:"account"
+
+                MDTextFieldHintText:
+                    text: "Логин"
+
+            MDTextField:
+                id:login_password
+                mode:"outlined"
+                password: True
+                password_mask: "*"
+
+                MDTextFieldLeadingIcon:
+                    icon:"key"
+
+                MDTextFieldHintText:
+                    text: "Пароль"
+
+            MDBoxLayout:
+                spacing: '10dp'
+                adaptive_width:True
+                adaptive_size:True
+                adaptive_height:True
+                orientation:"horizontal"
+
+                MDButton:
+                    style:"filled"
+                    on_press:
+                        root.current = 'logout'
+
+                    MDButtonIcon:
+                        icon:"logout"
+
+                    MDButtonText:
+                        text:"Регистрация"
+
+                MDButton:
+                    style:"filled"
+                    on_press: app.app_login(login_login.text,login_password.text)
+
+                    MDButtonIcon:
+                        icon:"login"
+
+                    MDButtonText:
+                        text:"Вход"
+
+        MDFloatLayout:
+            MDIconButton:
+                icon:'eye-off'
+                pos: login_password.pos[0] + login_password.width - self.width - dp(5), login_password.pos[1] + login_password.height/2 - self.height/2
+                on_press:
+                    self.icon = 'eye'
+                    login_password.password = False
+
+                on_release:
+                    self.icon = 'eye-off'
+                    login_password.password = True
+                    #self.icon = 'eye' if self.icon == 'eye-off' else 'eye-off'
+                    #login_password.password = True if login_password.password == False else False
+                    #login_password.password = self.icon == 'eye'
+
+    MDScreen:
+        name: "logout"
+
+        MDIconButton:
+            icon:'close'
+            style:'filled'
+            on_release:
+                root.current = 'Login'
+            pos_hint:{'center_x':.5, 'center_y':.05}
+
+        MDBoxLayout:
+            theme_font_size:'Custom'
+            size_hint_x: None
+            width:'300dp'
+            spacing: '10dp'
+            adaptive_height:True
+            pos_hint:{'center_x':.5,'center_y':.5}
+            orientation:"vertical"
+
+            MDLabel:
+                adaptive_height: True
+                theme_font_size:'Custom'
+                font_size:'24sp'
+                theme_font_name:'Custom'
+                font_name: 'Bahnschrift'
+                text:"Вход"
+                halign:'center'
+
+            MDTextField:
+                id:register_login
+                mode:"outlined"
+
+                MDTextFieldLeadingIcon:
+                    icon:"account"
+
+                MDTextFieldHintText:
+                    text: "Логин"
+
+            MDTextField:
+                id:register_password
+                mode:"outlined"
+                password: True
+                password_mask: "*"
+
+                MDTextFieldLeadingIcon:
+                    icon:"key"
+
+                MDTextFieldHintText:
+                    text: "Пароль"
+
+            MDTextField:
+                id:register_rpassword
+                mode:"outlined"
+                password: True
+                password_mask: "*"
+
+                MDTextFieldLeadingIcon:
+                    icon:"key"
+
+                MDTextFieldHintText:
+                    text: "Пароль"
+
+            MDButton:
+                style:"filled"
+                pos_hint: {'center_x': .5}
+
+                MDButtonIcon:
+                    icon:"logout"
+
+                MDButtonText:
+                    text:"Регистрация"
+
+        MDFloatLayout:
+            MDIconButton:
+                icon:'eye-off'
+                pos: register_password.pos[0] + register_password.width - self.width - dp(5), register_password.pos[1] + register_password.height/2 - self.height/2
+                on_press:
+                    self.icon = 'eye'
+                    register_password.password = False
+
+                on_release:
+                    self.icon = 'eye-off'
+                    register_password.password = True
+                    #self.icon = 'eye' if self.icon == 'eye-off' else 'eye-off'
+                    #login_password.password = True if login_password.password == False else False
+                    #login_password.password = self.icon == 'eye'
+
+    MDScreen:
+        name: "main"
+
+        MDBoxLayout
+            pos_hint:{'center_x':.5,'center_y':.5}
+            orientation: 'vertical'
+            spacing: 5
+            adaptive_height: True
+            adaptive_width: True
+            width: '200dp'
+            width: '200dp'
+
+            MDButton:
+                style: 'filled'
+                pos_hint:{'center_x':.5,'center_y':.5}
+                theme_width: 'Custom'
+                width: '170dp'
+                spacing: '10dp'
+
+                MDButtonIcon:
+                    icon: 'play'
+                    x:btn1_text.x - self.width - dp(10)
+
+                MDButtonText:
+                    id:btn1_text
+                    text: 'Играть'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDButton:
+                style: 'filled'
+                pos_hint:{'center_x':.5,'center_y':.5}
+                theme_width: 'Custom'
+                width: '170dp'
+                spacing: '10dp'
+
+                MDButtonIcon:
+                    icon: 'trophy'
+                    x:btn4_text.x - self.width - dp(10)
+
+                MDButtonText:
+                    id:btn4_text
+                    text: 'Рейтинги'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDButton:
+                style: 'filled'
+                pos_hint:{'center_x':.5,'center_y':.5}
+                theme_width: 'Custom'
+                width: '170dp'
+                spacing: '10dp'
+
+                MDButtonIcon:
+                    icon: 'cog'
+                    x:btn2_text.x - self.width - dp(10)
+                MDButtonText:
+                    id:btn2_text
+                    text: 'Настройки'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDButton:
+                style: 'filled'
+                pos_hint:{'center_x':.5,'center_y':.5}
+                theme_width: 'Custom'
+                width: '170dp'
+                spacing: '10dp'
+
+                on_press:
+                    app.stop()
+
+                MDButtonIcon:
+                    icon: 'exit-to-app'
+                    x:btn3_text.x - self.width - dp(10)
+
+                MDButtonText:
+                    id:btn3_text
+                    text: 'Выход'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
