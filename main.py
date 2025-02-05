@@ -6,8 +6,6 @@ from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.dialog import MDDialogIcon, MDDialog, MDDialogHeadlineText, MDDialogSupportingText, MDDialogButtonContainer
 from kivymd.uix.widget import MDWidget
 
-import 
-
 session = {
     'login': '',
     'token':''
