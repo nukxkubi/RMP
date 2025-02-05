@@ -6,6 +6,8 @@ from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.dialog import MDDialogIcon, MDDialog, MDDialogHeadlineText, MDDialogSupportingText, MDDialogButtonContainer
 from kivymd.uix.widget import MDWidget
 
+import 
+
 session = {
     'login': '',
     'token':''
@@ -22,75 +24,85 @@ class MainApp(MDApp):
         if active:
             self.theme_cls.primary_palette  = checkbox.value
 
+    def add_dialog(self, type_d:str = 'error', icon:str = None, title:str = None, text:str = None, ):
+        match type_d:
+            case 'error':
+                self.dialog = MDDialog(
+                    MDDialogIcon(
+                        icon=icon if icon else 'alert',
+                        theme_font_size='Custom',
+                        font_size='50sp'
+                    ),
+                    MDDialogHeadlineText(
+                        text=title if title else ''
+                    ),
+                    MDDialogSupportingText(
+                        text=text if text else ''
+                    ),
+                    MDDialogButtonContainer(
+                        MDWidget(),
+                        MDButton(
+                            MDButtonText(
+                                text="ОК"
+                            ),
+
+                            on_press=lambda *args: self.dialog.dismiss()
+                        )
+                    )
+                )
+
+            case 'msg':
+                self.dialog = MDDialog(
+                    MDDialogIcon(
+                        icon=icon if icon else 'information-outline',
+                        theme_font_size='Custom',
+                        font_size='50sp'
+                    ),
+                    MDDialogHeadlineText(
+                        text=title if title else ''
+                    ),
+                    MDDialogSupportingText(
+                        text=text if text else ''
+                    ),
+                    MDDialogButtonContainer(
+                        MDWidget(),
+                        MDButton(
+                            MDButtonText(
+                                text="ОК"
+                            ),
+
+                            on_press=lambda *args: self.dialog.dismiss()
+                        )
+                    )
+                )
+
+        self.dialog.open()
+
     def app_login(self, login, password):
         global session
         print('Кнопка нажата!')
 
         if login == '1' and password == '1':
-            #авторизация успешна
+            #Авторизация успешна
             session['login'] = login
             session['token'] = token_hex(16)
             self.root.current = 'main'
-            self.dialog = MDDialog(
-                MDDialogIcon(
-                    icon='smile',
-                    theme_font_size='Custom',
-                    font_size = '50sp'
-                ),
-                MDDialogHeadlineText(
-                    text=f'Добро пожаловать'
-                ),
-                MDDialogSupportingText(
-                    text=f'Рады вас видеть, {login}!'
-                ),
-                MDDialogButtonContainer(
-                    MDWidget(),
-                    MDButton(
-                        MDButtonText(
-                            text="НЕТ"
-                        ),
-
-                        on_press=lambda *args: exit()
-                    ),
-                    MDButton(
-                        MDButtonText(
-                            text ="ОК"
-                        ),
-
-                        on_press=lambda *args: self.dialog.dismiss()
-                    )
-                )
-            )
-
-            self.dialog.open()
-
+            self.add_dialog(type_d='msg', title='Добро пожаловать', text=f'Рады вас видеть,{login}')
         else:
-            self.dialog = MDDialog(
-                MDDialogIcon(
-                    icon='alert',
-                    theme_font_size='Custom',
-                    font_size = '50sp'
-                ),
-                MDDialogHeadlineText(
-                    text='ОШИБКА'
-                ),
-                MDDialogSupportingText(
-                    text='Неправильный логин или пароль!'
-                ),
-                MDDialogButtonContainer(
-                    MDWidget(),
-                    MDButton(MDWidget(),
-                        MDButtonText(
-                            text ="ОК"
-                        ),
+            self.add_dialog(title='Ошибка', text='Неверный логин или пароль')
 
-                        on_press = lambda *args: self.dialog.dismiss()
-                    )
-                )
-            )
-            self.dialog.open()
+    def app_logout(self, login, password, rpassword):
+        if login in ['a', 'log', 'admin', 'root']:
+            self.add_dialog(title='Регистрация', text='Данный логин уже существует!')
+            return
 
-            def app_register(self, register, password):
-                pass
+#       if mt('[0-9a-Za-z@_!]{8, 36}', password):
+#           self.add_dialog(title='Регистрация', text='Пароль не соответствует требованиям!')
+#           return
+
+        if rpassword != password:
+            self.add_dialog(title='Регистрация', text='Пароли не совпадают!')
+            return
+
 
 MainApp().run()
