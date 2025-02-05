@@ -150,7 +150,7 @@ MDScreenManager:
 
             MDButton:
                 style:"filled"
-                pos_hint: {'center_x': .5}
+                pos_hint: {'center_x':.5}
 
                 MDButtonIcon:
                     icon:"logout"
@@ -176,77 +176,201 @@ MDScreenManager:
     MDScreen:
         name: "main"
 
-        MDBoxLayout
+        MDBoxLayout:
+            spacing: 3
+            orientation:'vertical'
+            adaptive_height:True
+            adaptive_width:True
+            width:'200dp'
+            height:'200dp'
             pos_hint:{'center_x':.5,'center_y':.5}
-            orientation: 'vertical'
-            spacing: 5
-            adaptive_height: True
-            adaptive_width: True
-            width: '200dp'
-            width: '200dp'
 
             MDButton:
-                style: 'filled'
-                pos_hint:{'center_x':.5,'center_y':.5}
-                theme_width: 'Custom'
-                width: '170dp'
-                spacing: '10dp'
+                style:'tonal'
+                theme_width:'Custom'
+                width:'125dp'
+                pos_hint:{'center_x':.5}
+                size_hint_x: 1
 
                 MDButtonIcon:
-                    icon: 'play'
+                    icon:'play'
                     x:btn1_text.x - self.width - dp(10)
 
                 MDButtonText:
                     id:btn1_text
-                    text: 'Играть'
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text:'Играть'
+                    pos_hint:{'center_x':.5,'center_y':.5}
 
             MDButton:
-                style: 'filled'
                 pos_hint:{'center_x':.5,'center_y':.5}
-                theme_width: 'Custom'
-                width: '170dp'
-                spacing: '10dp'
-
+                style:'tonal'
+                pos_hint:{'center_x':.5}
+                theme_width:'Custom'
+                width:'125dp'
+                size_hint_x: 1
                 MDButtonIcon:
-                    icon: 'trophy'
+                    icon:'trophy'
                     x:btn4_text.x - self.width - dp(10)
-
                 MDButtonText:
                     id:btn4_text
-                    text: 'Рейтинги'
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-
+                    text:'Рейтинг'
+                    pos_hint:{'center_x':.5,'center_y':.5}
             MDButton:
-                style: 'filled'
-                pos_hint:{'center_x':.5,'center_y':.5}
-                theme_width: 'Custom'
-                width: '170dp'
-                spacing: '10dp'
-
-                MDButtonIcon:
-                    icon: 'cog'
-                    x:btn2_text.x - self.width - dp(10)
-                MDButtonText:
-                    id:btn2_text
-                    text: 'Настройки'
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-
-            MDButton:
-                style: 'filled'
-                pos_hint:{'center_x':.5,'center_y':.5}
-                theme_width: 'Custom'
-                width: '170dp'
-                spacing: '10dp'
+                style:'tonal'
+                pos_hint:{'center_x':.5}
+                theme_width:'Custom'
+                width:'125dp'
+                size_hint_x: 1
 
                 on_press:
+                    root.current = "settings"
+
+                MDButtonIcon:
+                    icon:'cog'
+                    x:btn2_text.x - self.width - dp(10)
+
+                MDButtonText:
+                    id:btn2_text
+                    text:'Настройки'
+                    pos_hint:{'center_x':.5,'center_y':.5}
+
+            MDButton:
+                style:'tonal'
+                pos_hint:{'center_x':.5}
+                theme_width:'Custom'
+                width:'125dp'
+                size_hint_x: 1
+
+                on_release:
                     app.stop()
 
                 MDButtonIcon:
-                    icon: 'exit-to-app'
+                    icon:'exit-to-app'
                     x:btn3_text.x - self.width - dp(10)
 
                 MDButtonText:
                     id:btn3_text
-                    text: 'Выход'
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text:'Выход'
+                    pos_hint:{'center_x':.5,'center_y':.5}
+
+    MDScreen:
+        name: "settings"
+
+        MDBoxLayout:
+            orientation: "vertical"
+
+            MDTopAppBar:
+                theme_bg_color: 'Custom'
+                md_bg_color: app.theme_cls.primaryColor
+
+                MDTopAppBarLeadingButtonContainer: #левый контейнер с кнопками
+                    MDActionTopAppBarButton: #Кнопки для контейнеров AppBar
+                        icon: 'arrow-left'
+                        theme_icon_color: 'Custom'
+                        icon_color: [1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
+
+                        on_press:
+                            root.current = "main"
+
+                    MDTopAppBarTitle:
+                        text: "Настройки"
+                        theme_text_color: 'Custom'
+                        text_color: [1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
+
+            MDScrollView:
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    padding: '25dp'
+                    spacing: '25dp'
+
+                    MDBoxLayout:
+                        MDIcon:
+                            icon: 'theme-light-dark'
+                            pos_hint: {'center_y':.5}
+
+                        MDLabel:
+                            text: "Тема приложения"
+                            adaptive_height: True
+                            pos_hint: {'center_y':.5}
+                            size_hint_x: 1
+                            theme_line_height: 'Custom'
+                            line_height: 1
+
+                        MDSwitch:
+                            active: True if app.theme_cls.theme_style == 'Dark' else False
+                            icon_active: 'weather-night'
+                            icon_inactive: 'weather-sunny'
+                            pos_hint: {'center_y':.5}
+
+                            on_active:
+                                app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
+
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        adaptive_height: 'Custom'
+                        spacing: '25dp'
+                        padding: '25dp'
+
+                        MDIcon:
+                            icon: 'palette'
+                            pos_hint: {'center_y':.5}
+
+                        MDLabel:
+                            text: "Цветовая схема"
+                            adaptive_height: True
+                            pos_hint: {'center_y':.5}
+                            size_hint_x: 1
+                            theme_line_height: 'Custom'
+                            line_height: 1
+
+                        MDBoxLayout:
+                            adaptive_height: True
+                            adaptive_height: 'horizontal'
+                            spacing: '15dp'
+
+                            MDCheckbox:
+                                value: 'Green'
+                                group: 'set_acc_col'
+                                color_active: self.value.lower()
+                                color_inactive: self.value.lower()
+                                theme_font_size: 'Custom'
+                                font_size: '36sp'
+                                active: True if app.theme_cls.primary_palette == self.value else False
+
+                                on_active:
+                                    app.radio_change_color(*args)
+
+                            MDCheckbox:
+                                value: 'Yellow'
+                                group: 'set_acc_col'
+                                color_active: self.value.lower()
+                                color_inactive: self.value.lower()
+                                theme_font_size: 'Custom'
+                                font_size: '36sp'
+
+                                active: True if app.theme_cls.primary_palette == self.value else False
+
+                                on_active:
+                                    app.radio_change_color(*args)
+
+                            MDCheckbox:
+                                value: 'Red'
+                                group: 'set_acc_col'
+                                color_active: self.value.lower()
+                                color_inactive: self.value.lower()
+                                theme_font_size: 'Custom'
+                                font_size: '36sp'
+
+                                active: True if app.theme_cls.primary_palette == self.value else False
+
+                                on_active:
+                                    app.radio_change_color(*args)
+
+#                        MDCheckbox:
+#                           active: True if app.theme_cls.theme_style == 'Dark' else False
+#                            checkbox_icon_normal: 'weather-sunny'
+#                            checkbox_icon_down: 'weather-night'
+#
+#                            on_active:
+#                               app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
