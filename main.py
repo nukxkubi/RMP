@@ -18,6 +18,10 @@ class MainApp(MDApp):
         self.root = Builder.load_file("ui.kv")
         return self.root
 
+    def radio_change_color(self, checkbox, active):
+        if active:
+            self.theme_cls.primary_palette  = checkbox.value
+
     def app_login(self, login, password):
         global session
         print('Кнопка нажата!')
