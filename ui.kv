@@ -29,7 +29,7 @@ MDScreenManager:
                     icon:"account"
 
                 MDTextFieldHintText:
-                    text: "логин"
+                    text: "Логин"
 
             MDTextField:
                 id:login_password
@@ -41,7 +41,7 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "пароль"
+                    text: "Пароль"
 
             MDBoxLayout:
                 spacing: '10dp'
@@ -89,7 +89,7 @@ MDScreenManager:
             style:'filled'
             on_release:
                 root.current = 'Login'
-            pos_hint:{'center_x':.5, 'center_y':.5}
+            pos_hint:{'center_x':.5}
 
         MDBoxLayout:
             theme_font_size:'Custom'
@@ -117,7 +117,7 @@ MDScreenManager:
                     icon:"account"
 
                 MDTextFieldHintText:
-                    text: "логин"
+                    text: "Логин"
 
             MDTextField:
                 id:register_password
@@ -129,7 +129,7 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "пароль"
+                    text: "Пароль"
 
             MDTextField:
                 id:register_rpassword
@@ -141,7 +141,7 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "пароль"
+                    text: "Повторите пароль"
 
             MDButton:
                 style:"filled"
@@ -256,8 +256,6 @@ MDScreenManager:
         MDIconButton:
             style:'filled'
             icon:'account-cancel'
-            height: 100
-            width: 100
 
             x:scr_main.x + scr_main.width - dp(10) - self.width
             y:scr_main.y + scr_main.height - dp(10) - self.height
@@ -282,15 +280,16 @@ MDScreenManager:
                 md_bg_color: app.theme_cls.primaryColor
 
                 MDTopAppBarLeadingButtonContainer: # Данный контейнер с кнопками
-                    MDTopAppBarTrailingButtonContainer:
+                    MDActionTopAppBarButton:
                         icon:'arrow-left'
                         theme_icon_color:'Custom'
-                        icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0,0,0]
+                        icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
+                        on_press: root.current = 'main'
 
-            MDTopAppBarTitle:
-                text:'Настройки'
-                theme_icon_color:'Custom'
-                icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0,0,0]
+                MDTopAppBarTitle:
+                    text:'Настройки'
+                    theme_icon_color:'Custom'
+                    icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0,0,0]
 
             MDScrollView:
                 MDBoxLayout:
