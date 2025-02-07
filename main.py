@@ -5,8 +5,7 @@ from kivy.lang import Builder
 from secrets import token_hex
 from datetime import date, datetime
 from kivymd.uix.button import MDButton, MDButtonText
-from kivymd.uix.dialog import MDDialogIcon, MDDialog, MDDialogHeadlineText, MDDialogSupportingText,
-    MDDialogButtonContainer
+from kivymd.uix.dialog import MDDialogIcon, MDDialog, MDDialogHeadlineText, MDDialogSupportingText, MDDialogButtonContainer
 from kivymd.uix.widget import MDWidget
 from kivymd.uix.transition import MDSharedAxisTransition
 
