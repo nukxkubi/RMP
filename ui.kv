@@ -29,7 +29,7 @@ MDScreenManager:
                     icon:"account"
 
                 MDTextFieldHintText:
-                    text: "Логин"
+                    text: "логин"
 
             MDTextField:
                 id:login_password
@@ -41,7 +41,7 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "Пароль"
+                    text: "пароль"
 
             MDBoxLayout:
                 spacing: '10dp'
@@ -64,10 +64,8 @@ MDScreenManager:
                 MDButton:
                     style:"filled"
                     on_press: app.app_login(login_login.text,login_password.text)
-
                     MDButtonIcon:
                         icon:"login"
-
                     MDButtonText:
                         text:"Вход"
 
@@ -82,9 +80,6 @@ MDScreenManager:
                 on_release:
                     self.icon = 'eye-off'
                     login_password.password = True
-                    #self.icon = 'eye' if self.icon == 'eye-off' else 'eye-off'
-                    #login_password.password = True if login_password.password == False else False
-                    #login_password.password = self.icon == 'eye'
 
     MDScreen:
         name: "logout"
@@ -94,7 +89,7 @@ MDScreenManager:
             style:'filled'
             on_release:
                 root.current = 'Login'
-            pos_hint:{'center_x':.5, 'center_y':.05}
+            pos_hint:{'center_x':.5, 'center_y':.5}
 
         MDBoxLayout:
             theme_font_size:'Custom'
@@ -122,7 +117,7 @@ MDScreenManager:
                     icon:"account"
 
                 MDTextFieldHintText:
-                    text: "Логин"
+                    text: "логин"
 
             MDTextField:
                 id:register_password
@@ -134,7 +129,7 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "Пароль"
+                    text: "пароль"
 
             MDTextField:
                 id:register_rpassword
@@ -146,11 +141,12 @@ MDScreenManager:
                     icon:"key"
 
                 MDTextFieldHintText:
-                    text: "Пароль"
+                    text: "пароль"
 
             MDButton:
                 style:"filled"
-                pos_hint: {'center_x':.5}
+                pos_hint:{'center_x':.5}
+                on_press: app.app_logout(register_login.text,register_password.text,register_rpassword.text)
 
                 MDButtonIcon:
                     icon:"logout"
@@ -174,6 +170,7 @@ MDScreenManager:
                     #login_password.password = self.icon == 'eye'
 
     MDScreen:
+        id:scr_main
         name: "main"
 
         MDBoxLayout:
@@ -191,6 +188,7 @@ MDScreenManager:
                 width:'125dp'
                 pos_hint:{'center_x':.5}
                 size_hint_x: 1
+                on_release: app.start_game()
 
                 MDButtonIcon:
                     icon:'play'
@@ -208,22 +206,25 @@ MDScreenManager:
                 theme_width:'Custom'
                 width:'125dp'
                 size_hint_x: 1
+
                 MDButtonIcon:
                     icon:'trophy'
                     x:btn4_text.x - self.width - dp(10)
+
                 MDButtonText:
                     id:btn4_text
                     text:'Рейтинг'
                     pos_hint:{'center_x':.5,'center_y':.5}
+
+
             MDButton:
                 style:'tonal'
                 pos_hint:{'center_x':.5}
                 theme_width:'Custom'
                 width:'125dp'
                 size_hint_x: 1
-
-                on_press:
-                    root.current = "settings"
+                on_release:
+                    root.current = 'settings'
 
                 MDButtonIcon:
                     icon:'cog'
@@ -240,7 +241,6 @@ MDScreenManager:
                 theme_width:'Custom'
                 width:'125dp'
                 size_hint_x: 1
-
                 on_release:
                     app.stop()
 
@@ -253,124 +253,174 @@ MDScreenManager:
                     text:'Выход'
                     pos_hint:{'center_x':.5,'center_y':.5}
 
+        MDIconButton:
+            style:'filled'
+            icon:'account-cancel'
+            height: 100
+            width: 100
+
+            x:scr_main.x + scr_main.width - dp(10) - self.width
+            y:scr_main.y + scr_main.height - dp(10) - self.height
+
+            on_release:
+                login_login.text =''
+                login_password.text=''
+                app.close_session()
+                root.current = 'Login'
+
+            x: scr_main.x + scr_main.width - self.width
+            y: scr_main.y + scr_main.height - self.height
+
     MDScreen:
-        name: "settings"
+        name:'settings'
 
         MDBoxLayout:
-            orientation: "vertical"
+            orientation:'vertical'
+
+            MDTopAppBar:
+                theme_bg_color:'Custom'
+                md_bg_color: app.theme_cls.primaryColor
+
+                MDTopAppBarLeadingButtonContainer: # Данный контейнер с кнопками
+                    MDTopAppBarTrailingButtonContainer:
+                        icon:'arrow-left'
+                        theme_icon_color:'Custom'
+                        icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0,0,0]
+
+            MDTopAppBarTitle:
+                text:'Настройки'
+                theme_icon_color:'Custom'
+                icon_color: [1,1,1] if app.theme_cls.theme_style == 'Light' else [0,0,0]
+
+            MDScrollView:
+                MDBoxLayout:
+                    orientation:'vertical'
+                    adaptive_height:True
+
+                    MDBoxLayout:
+                        padding: '25dp'
+                        orientation:'horizontal'
+                        adaptive_height: True
+                        spacing:'25dp'
+
+                        MDIcon:
+                            icon:'theme-light-dark'
+                            pos_hint:{'center_y':.5}
+
+                        MDLabel:
+                            text:'Тема приложения'
+                            adaptive_height: True
+                            size_hint_x:1
+                            theme_line_height:'Custom'
+                            line_height: 1
+                            pos_hint:{'center_y':.5}
+
+                        MDSwitch:
+                            active: True if app.theme_cls.theme_style == 'Dark' else False
+                            icon_active:'weather-night'
+                            icon_inactive:'weather-sunny'
+                            pos_hint:{'center_y':.5}
+                            on_active:
+                                app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
+                                app.config.set('THEMING','theme_style', app.theme_cls.theme_style)
+                                app.config.write()
+
+                    MDBoxLayout:
+                        padding: '25dp'
+                        orientation:'horizontal'
+                        adaptive_height: True
+                        spacing:'25dp'
+
+                    MDBoxLayout:
+                        padding: '25dp'
+                        orientation:'horizontal'
+                        adaptive_height: True
+                        spacing:'25dp'
+
+                        MDIcon:
+                            icon:'palette'
+                            pos_hint:{'center_y':.5}
+
+                        MDLabel:
+                            text:'Цветавая схема'
+                            adaptive_height: True
+                            size_hint_x:1
+                            theme_line_height:'Custom'
+                            line_height: 1
+                            pos_hint:{'center_y':.5}
+
+                        MDCheckbox:
+                            active:True if app.theme_cls.primary_palette == self.value else False
+                            value:'Green'
+                            group:'set_acc_color'
+                            color_active:self.value.lower()
+                            color_inactive:self.value.lower()
+                            theme_font_size:'Custom'
+                            font_size:'36sp'
+                            on_active: app.radio_change_color(*args)
+
+                        MDCheckbox:
+                            active:True if app.theme_cls.primary_palette == self.value else False
+                            value:'Blue'
+                            group:'set_acc_color'
+                            theme_font_size:'Custom'
+                            font_size:'36sp'
+                            color_active:self.value.lower()
+                            color_inactive:self.value.lower()
+                            on_active: app.radio_change_color(*args)
+
+                        MDCheckbox:
+                            active:True if app.theme_cls.primary_palette == self.value else False
+                            value:'Red'
+                            group:'set_acc_color'
+                            theme_font_size:'Custom'
+                            font_size:'36sp'
+                            color_active:self.value.lower()
+                            color_inactive:self.value.lower()
+                            on_active: app.radio_change_color(*args)
+
+    MDScreen:
+        name:'game'
+
+        MDBoxLayout:
+            orientation:'vertical'
 
             MDTopAppBar:
                 theme_bg_color: 'Custom'
                 md_bg_color: app.theme_cls.primaryColor
 
-                MDTopAppBarLeadingButtonContainer: #левый контейнер с кнопками
-                    MDActionTopAppBarButton: #Кнопки для контейнеров AppBar
+                MDTopAppBarLeadingButtonContainer: # Левый контейнер с кнопками
+                    MDActionTopAppBarButton: # Кнопки для контейнера AppBar
                         icon: 'arrow-left'
                         theme_icon_color: 'Custom'
                         icon_color: [1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
-
                         on_press:
-                            root.current = "main"
+                            root.current = 'main'
 
                     MDTopAppBarTitle:
-                        text: "Настройки"
+                        text: 'Таймер: 00:00'
                         theme_text_color: 'Custom'
                         text_color: [1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
 
-            MDScrollView:
+                    MDTopAppBarLeadingButtonContainer:
+                        MDActionTopAppBarButton: # Кнопки для контейнеров AppBar
+                            icon: 'restart'
+                            theme_icon_color: 'Custom'
+                            icon_color: [1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0]
+                            on_press: app.start_game()
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: '25dp'
+
                 MDBoxLayout:
+                    id: game_layout
                     orientation: 'vertical'
-                    adaptive_height: True
-                    padding: '25dp'
-                    spacing: '25dp'
 
-                    MDBoxLayout:
-                        MDIcon:
-                            icon: 'theme-light-dark'
-                            pos_hint: {'center_y':.5}
-
-                        MDLabel:
-                            text: "Тема приложения"
-                            adaptive_height: True
-                            pos_hint: {'center_y':.5}
-                            size_hint_x: 1
-                            theme_line_height: 'Custom'
-                            line_height: 1
-
-                        MDSwitch:
-                            active: True if app.theme_cls.theme_style == 'Dark' else False
-                            icon_active: 'weather-night'
-                            icon_inactive: 'weather-sunny'
-                            pos_hint: {'center_y':.5}
-
-                            on_active:
-                                app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
-
-                    MDBoxLayout:
-                        orientation: 'horizontal'
-                        adaptive_height: 'Custom'
-                        spacing: '25dp'
-                        padding: '25dp'
-
-                        MDIcon:
-                            icon: 'palette'
-                            pos_hint: {'center_y':.5}
-
-                        MDLabel:
-                            text: "Цветовая схема"
-                            adaptive_height: True
-                            pos_hint: {'center_y':.5}
-                            size_hint_x: 1
-                            theme_line_height: 'Custom'
-                            line_height: 1
-
-                        MDBoxLayout:
-                            adaptive_height: True
-                            adaptive_height: 'horizontal'
-                            spacing: '15dp'
-
-                            MDCheckbox:
-                                value: 'Green'
-                                group: 'set_acc_col'
-                                color_active: self.value.lower()
-                                color_inactive: self.value.lower()
-                                theme_font_size: 'Custom'
-                                font_size: '36sp'
-                                active: True if app.theme_cls.primary_palette == self.value else False
-
-                                on_active:
-                                    app.radio_change_color(*args)
-
-                            MDCheckbox:
-                                value: 'Yellow'
-                                group: 'set_acc_col'
-                                color_active: self.value.lower()
-                                color_inactive: self.value.lower()
-                                theme_font_size: 'Custom'
-                                font_size: '36sp'
-
-                                active: True if app.theme_cls.primary_palette == self.value else False
-
-                                on_active:
-                                    app.radio_change_color(*args)
-
-                            MDCheckbox:
-                                value: 'Red'
-                                group: 'set_acc_col'
-                                color_active: self.value.lower()
-                                color_inactive: self.value.lower()
-                                theme_font_size: 'Custom'
-                                font_size: '36sp'
-
-                                active: True if app.theme_cls.primary_palette == self.value else False
-
-                                on_active:
-                                    app.radio_change_color(*args)
-
-#                        MDCheckbox:
-#                           active: True if app.theme_cls.theme_style == 'Dark' else False
-#                            checkbox_icon_normal: 'weather-sunny'
-#                            checkbox_icon_down: 'weather-night'
-#
-#                            on_active:
-#                               app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
+                    MDWidget:
+                        pos_hint: {'center_x':.5, 'center_y':.5}
+                        md_bg_color: [.6, .6 ,.6]
+                        size_hint_x: None
+                        size_hint_y: 1
+                        width: game_layout.width
+                        height: 100
